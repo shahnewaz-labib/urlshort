@@ -1,6 +1,26 @@
 version: "3.8"
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: urlshort-app
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: 5432
+      POSTGRES_TIMEZONE: UTC
+      DOMAIN_NAME: http://localhost:8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - urlshort-network
+
   postgres:
     image: postgres:14
     container_name: urlshort-db
